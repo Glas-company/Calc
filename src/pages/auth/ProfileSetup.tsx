@@ -79,26 +79,45 @@ export default function ProfileSetup() {
     e.preventDefault();
     setError(null);
 
+    console.log("🔄 [ProfileSetup] Iniciando salvamento do perfil...");
+    console.log("📍 [ProfileSetup] Dados:", formData);
+
     const validationError = validateForm();
     if (validationError) {
+      console.log("❌ [ProfileSetup] Erro de validação:", validationError);
       setError(validationError);
       return;
     }
 
     setIsSubmitting(true);
 
-    const { error: saveError } = await saveUserProfile({
-      companyName: formData.companyName.trim(),
-      fullName: formData.fullName.trim(),
-      drones: formData.drones?.trim() || undefined,
-    });
+    try {
+      console.log("🔄 [ProfileSetup] Chamando saveUserProfile...");
+      
+      const { error: saveError } = await saveUserProfile({
+        companyName: formData.companyName.trim(),
+        fullName: formData.fullName.trim(),
+        drones: formData.drones?.trim() || undefined,
+      });
 
-    if (saveError) {
-      setError(saveError.message || "Erro ao salvar perfil. Tente novamente.");
-      setIsSubmitting(false);
-    } else {
-      console.log("✅ [ProfileSetup] Perfil salvo com sucesso");
+      if (saveError) {
+        console.error("❌ [ProfileSetup] Erro ao salvar:", saveError);
+        setError(saveError.message || "Erro ao salvar perfil. Tente novamente.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      console.log("✅ [ProfileSetup] Perfil salvo com sucesso!");
+      console.log("🔄 [ProfileSetup] Redirecionando para /app/home...");
+      
+      // Pequeno delay para garantir que o estado foi atualizado no Supabase
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       navigate("/app/home", { replace: true });
+    } catch (err: any) {
+      console.error("❌ [ProfileSetup] Erro inesperado:", err);
+      setError(err?.message || "Erro inesperado. Tente novamente.");
+      setIsSubmitting(false);
     }
   };
 
