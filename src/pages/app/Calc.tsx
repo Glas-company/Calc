@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Calculator, RotateCcw, AlertCircle, CheckCircle2, Plus, Trash2, Package, History, Save, ChevronRight, FlaskConical, Droplets, Info, MoreVertical } from "lucide-react";
+import { Calculator, RotateCcw, AlertCircle, CheckCircle2, Plus, Trash2, Package, History, Save, ChevronRight, FlaskConical, Droplets, Info, MoreVertical, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,7 +72,7 @@ export default function Calc() {
       unidade: produto.unidade,
       produtoOriginal: produto,
     };
-    setProdutos([...produtos, novoProduto]);
+    setProdutos(prev => [...prev, novoProduto]);
     setDialogAberto(false);
   };
 
@@ -83,7 +83,7 @@ export default function Calc() {
       dose: product.dose,
       unidade: product.unidade,
     };
-    setProdutos([...produtos, novoProduto]);
+    setProdutos(prev => [...prev, novoProduto]);
     toast({ title: "Produto adicionado", description: `${product.nome} foi adicionado ao cálculo.` });
   };
 
@@ -117,7 +117,7 @@ export default function Calc() {
           dose: product.dose_value,
           unidade: product.dose_unit === "mL" || product.dose_unit === "mL/L" ? "mL" : "L",
         };
-        setProdutos([...produtos, novoProduto]);
+        setProdutos(prev => [...prev, novoProduto]);
         setAddProductModalOpen(false);
       }
     } catch (error) {
@@ -126,11 +126,11 @@ export default function Calc() {
   };
 
   const removerProduto = (id: string) => {
-    setProdutos(produtos.filter((p) => p.id !== id));
+    setProdutos(prev => prev.filter((p) => p.id !== id));
   };
 
   const atualizarProduto = (id: string, campo: keyof ProdutoNoCalculo, valor: any) => {
-    setProdutos(produtos.map((p) => (p.id === id ? { ...p, [campo]: valor } : p)));
+    setProdutos(prev => prev.map((p) => (p.id === id ? { ...p, [campo]: valor } : p)));
   };
 
   const handleCalculate = () => {
@@ -200,7 +200,7 @@ export default function Calc() {
       products: produtosParaCalculo,
     };
 
-    const { id, error } = await saveCalculation(input, result);
+    const { error } = await saveCalculation(input, result);
     setIsSaving(false);
 
     if (error) {
@@ -212,9 +212,9 @@ export default function Calc() {
   };
 
   return (
-    <div className="space-y-6 pb-32 animate-fade-in bg-[#fdfdfd]">
+    <div className="space-y-6 pb-32 animate-fade-in bg-[#fdfdfd] min-h-screen px-2">
       {/* Header */}
-      <div className="flex items-center justify-between pt-4 px-1">
+      <div className="flex items-center justify-between pt-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center border border-emerald-100 shadow-sm">
             <Calculator size={24} className="text-emerald-600" />
@@ -231,7 +231,6 @@ export default function Calc() {
 
       {!result ? (
         <div className="space-y-6">
-          {/* Main Inputs Card */}
           <Card className="p-6 rounded-[32px] border-none shadow-sm bg-white space-y-5">
             <div className="flex items-center gap-2 mb-2">
               <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center">
@@ -268,8 +267,7 @@ export default function Calc() {
             </div>
           </Card>
 
-          {/* Products Section */}
-          <div className="px-1 space-y-4">
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <h2 className="text-[18px] font-bold text-[#1a1a1a]">Produtos</h2>
@@ -287,7 +285,7 @@ export default function Calc() {
 
             <div className="space-y-3">
               {produtos.map((produto) => (
-                <div key={produto.id} className="bg-white rounded-[24px] p-4 shadow-sm border border-gray-50 relative group animate-in slide-in-from-bottom-2 duration-300">
+                <div key={produto.id} className="bg-white rounded-[24px] p-4 shadow-sm border border-gray-50 relative group">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 space-y-3">
                       <div className="flex items-center gap-2">
@@ -345,7 +343,7 @@ export default function Calc() {
           </div>
 
           {error && (
-            <div className="mx-1 p-4 bg-red-50 border border-red-100 rounded-[24px] flex items-start gap-3">
+            <div className="p-4 bg-red-50 border border-red-100 rounded-[24px] flex items-start gap-3">
               <AlertCircle size={18} className="text-red-500 mt-0.5 flex-shrink-0" />
               <p className="text-[13px] text-red-600 font-medium leading-relaxed">{error}</p>
             </div>
@@ -361,9 +359,8 @@ export default function Calc() {
           </div>
         </div>
       ) : (
-        <div className="space-y-6 animate-in zoom-in-95 duration-500">
-          {/* RESULTS REDESIGN */}
-          <div className="px-1 space-y-6">
+        <div className="space-y-6">
+          <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-[22px] font-bold text-[#1a1a1a]">Resultado Final</h2>
               <div className="flex gap-2">
@@ -376,7 +373,6 @@ export default function Calc() {
               </div>
             </div>
 
-            {/* Summary Measurement Cards */}
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-[#f0f9ff] rounded-[32px] p-6 shadow-sm border border-blue-50 flex flex-col justify-between h-[160px]">
                 <div className="flex items-center gap-2">
@@ -411,7 +407,6 @@ export default function Calc() {
               </div>
             </div>
 
-            {/* Step by Step Breakdown */}
             <div className="space-y-4">
               <h3 className="text-[16px] font-bold text-[#1a1a1a] uppercase tracking-wider ml-1">Mistura por Tanque</h3>
               
@@ -456,8 +451,7 @@ export default function Calc() {
               </div>
             </div>
 
-            {/* Save/Action Buttons at bottom */}
-            <div className="space-y-3 pt-4">
+            <div className="space-y-3 pt-4 pb-10">
               <Button onClick={handleSaveCalculation} disabled={isSaving} className="w-full h-14 bg-emerald-600 text-white text-[16px] font-bold rounded-[20px] shadow-lg active:scale-95 transition-all hover:bg-emerald-700 uppercase tracking-wider">
                 {isSaving ? "Salvando..." : "Salvar no Histórico"}
               </Button>
@@ -474,7 +468,6 @@ export default function Calc() {
         </div>
       )}
 
-      {/* Catalog Dialog */}
       <Dialog open={dialogAberto} onOpenChange={setDialogAberto}>
         <DialogContent className="max-w-md max-h-[85vh] flex flex-col p-0 rounded-[32px] border-none overflow-hidden">
           <DialogHeader className="px-6 pt-8 pb-4 bg-white">
