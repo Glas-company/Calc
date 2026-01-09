@@ -106,7 +106,7 @@ export default function Perfil() {
       <div className="flex flex-col items-center">
         {/* Avatar with Circular Border */}
         <div className="relative mb-6">
-          <div className="absolute inset-0 -m-2 border-2 border-emerald-500 rounded-full clip-path-half" /> {/* Mock progress circle */}
+          <div className="absolute inset-0 -m-2 border-2 border-emerald-500 rounded-full" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 60%, 0 60%)' }} /> {/* Mock progress circle */}
           <AvatarPicker
             avatarUrl={avatarUrl}
             onAvatarChange={handleAvatarChange}

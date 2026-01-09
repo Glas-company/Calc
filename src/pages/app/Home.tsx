@@ -293,7 +293,7 @@ export default function Home() {
               </div>
             </div>
             <Link to="/app/calc" className="bg-[#1a1a1a] px-6 py-4 flex items-center justify-between group-hover:bg-primary transition-colors">
-              <span className="text-white text-[15px] font-bold tracking-wide uppercase">Começar Agora</span>
+              <span className="text-white text-[15px] font-bold tracking-wide">Começar agora</span>
               <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
                 <ArrowRight size={20} className="text-white" />
               </div>
@@ -365,8 +365,8 @@ function SearchResults({ calculations, recipes, products, isLoading, searchTerm 
       {products.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-[16px] font-bold text-[#1a1a1a] uppercase tracking-wider">Produtos</h2>
-            <Link to="/app/produtos" className="text-[12px] font-bold text-amber-600">VER TODOS</Link>
+            <h2 className="text-[16px] font-bold text-[#1a1a1a] tracking-wider">Produtos</h2>
+            <Link to="/app/produtos" className="text-[12px] font-bold text-amber-600">Ver todos</Link>
           </div>
           {products.slice(0, 3).map((product) => {
             const categoryColor = getCategoryColor(product.category);
@@ -404,8 +404,8 @@ function SearchResults({ calculations, recipes, products, isLoading, searchTerm 
       {recipes.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-[16px] font-bold text-[#1a1a1a] uppercase tracking-wider">Receitas</h2>
-            <Link to="/app/receitas" className="text-[12px] font-bold text-purple-600">VER TODOS</Link>
+            <h2 className="text-[16px] font-bold text-[#1a1a1a] tracking-wider">Receitas</h2>
+            <Link to="/app/receitas" className="text-[12px] font-bold text-purple-600">Ver todos</Link>
           </div>
           {recipes.slice(0, 3).map((recipe) => (
             <div
@@ -442,8 +442,8 @@ function SearchResults({ calculations, recipes, products, isLoading, searchTerm 
       {calculations.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-[16px] font-bold text-[#1a1a1a] uppercase tracking-wider">Cálculos</h2>
-            <Link to="/app/calculos" className="text-[12px] font-bold text-green-600">VER TODOS</Link>
+            <h2 className="text-[16px] font-bold text-[#1a1a1a] tracking-wider">Cálculos</h2>
+            <Link to="/app/calculos" className="text-[12px] font-bold text-green-600">Ver todos</Link>
           </div>
           {calculations.slice(0, 3).map((calc) => (
             <div

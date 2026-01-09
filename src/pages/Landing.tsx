@@ -93,7 +93,7 @@ export default function Landing() {
             </div>
 
             <Link to="/auth/register" className="bg-[#1a1a1a] px-6 py-4 flex items-center justify-between hover:bg-black transition-colors">
-              <span className="text-white text-[15px] font-bold uppercase tracking-wider">Começar grátis</span>
+              <span className="text-white text-[15px] font-bold">Começar grátis</span>
               <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center">
                 <ArrowRight size={16} className="text-[#1a1a1a]" />
               </div>
@@ -116,14 +116,14 @@ export default function Landing() {
           <div className="space-y-4 px-1">
             <Link 
               to="/auth/register"
-              className="flex items-center justify-center w-full h-14 bg-[#1a1a1a] text-white text-[16px] font-bold rounded-2xl active:scale-[0.98] transition-all shadow-xl shadow-black/10 uppercase tracking-wide"
+              className="flex items-center justify-center w-full h-14 bg-[#1a1a1a] text-white text-[16px] font-bold rounded-2xl active:scale-[0.98] transition-all shadow-xl shadow-black/10"
             >
               Criar conta grátis
               <ArrowRight size={18} className="ml-2" />
             </Link>
             <Link 
               to="/auth/login"
-              className="flex items-center justify-center w-full h-14 bg-[#f8f9fb] text-[#1a1a1a] text-[16px] font-bold rounded-2xl active:scale-[0.98] transition-all border border-gray-100 uppercase tracking-wide"
+              className="flex items-center justify-center w-full h-14 bg-[#f8f9fb] text-[#1a1a1a] text-[16px] font-bold rounded-2xl active:scale-[0.98] transition-all border border-gray-100"
             >
               Já tenho conta
             </Link>

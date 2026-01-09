@@ -221,7 +221,7 @@ export default function Calc() {
           </div>
           <div>
             <h1 className="text-[24px] font-bold text-[#1a1a1a]">Calculadora</h1>
-            <p className="text-[13px] text-[#8a8a8a] font-medium uppercase tracking-wider">Mistura de Calda</p>
+            <p className="text-[13px] text-[#8a8a8a] font-medium tracking-wider">Mistura de calda</p>
           </div>
         </div>
         <button onClick={handleClear} className="w-10 h-10 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center active:scale-90 transition-all">
@@ -352,9 +352,9 @@ export default function Calc() {
           <div className="px-1 pt-4 pb-8">
             <Button 
               onClick={handleCalculate} 
-              className="w-full h-12 bg-[#1a1a1a] text-white text-[15px] font-bold rounded-2xl shadow-md active:scale-95 transition-all hover:bg-black uppercase tracking-wider"
+              className="w-full h-12 bg-[#1a1a1a] text-white text-[15px] font-bold rounded-2xl shadow-md active:scale-95 transition-all hover:bg-black"
             >
-              Realizar Cálculo
+              Realizar cálculo
             </Button>
           </div>
         </div>
@@ -452,8 +452,8 @@ export default function Calc() {
             </div>
 
             <div className="space-y-3 pt-4 pb-10">
-              <Button onClick={handleSaveCalculation} disabled={isSaving} className="w-full h-12 bg-emerald-600 text-white text-[15px] font-bold rounded-2xl shadow-md active:scale-95 transition-all hover:bg-emerald-700 uppercase tracking-wider">
-                {isSaving ? "Salvando..." : "Salvar no Histórico"}
+              <Button onClick={handleSaveCalculation} disabled={isSaving} className="w-full h-12 bg-emerald-600 text-white text-[15px] font-bold rounded-2xl shadow-md active:scale-95 transition-all hover:bg-emerald-700">
+                {isSaving ? "Salvando..." : "Salvar no histórico"}
               </Button>
               <div className="grid grid-cols-2 gap-3">
                 <Button onClick={() => navigate("/app/favoritos")} variant="outline" className="h-12 rounded-2xl text-[#1a1a1a] font-bold border-gray-200 text-[14px]">
