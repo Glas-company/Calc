@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Settings, HelpCircle, ChevronRight, LogOut, Pencil, Check, X } from "lucide-react";
+import { Settings, HelpCircle, ChevronRight, LogOut, Pencil, Check, X, ShieldCheck, Crown, Star, Calculator, History, Bell } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { getUserProfile, saveUserProfile, UserProfile } from "@/lib/userProfile";
@@ -9,23 +9,7 @@ import { getAvatarUrl } from "@/lib/avatarService";
 import { AvatarPicker } from "@/components/profile/AvatarPicker";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-const menuItems = [
-  {
-    id: "settings",
-    icon: Settings,
-    label: "Configurações",
-    description: "Preferências do app",
-    path: "/app/configuracoes",
-  },
-  {
-    id: "help",
-    icon: HelpCircle,
-    label: "Ajuda",
-    description: "Suporte e FAQ",
-    path: "/app/ajuda",
-  },
-];
+import { cn } from "@/lib/utils";
 
 export default function Perfil() {
   const { toast } = useToast();
@@ -59,10 +43,6 @@ export default function Perfil() {
     };
     fetchData();
   }, [user]);
-
-  const handleMenuClick = (path: string) => {
-    navigate(path);
-  };
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -110,128 +90,163 @@ export default function Perfil() {
   };
 
   return (
-    <div className="pt-4 pb-8 animate-fade-in">
-      {/* Header */}
-      <h1 className="text-[20px] font-bold text-[#1a1a1a] mb-6">Meu Perfil</h1>
+    <div className="pt-4 pb-24 animate-fade-in space-y-8">
+      {/* Top Bar */}
+      <div className="flex items-center justify-between px-2">
+        <h1 className="text-[24px] font-black tracking-tight text-[#1a1a1a]">emerald</h1>
+        <button 
+          onClick={() => navigate("/app/configuracoes")}
+          className="w-10 h-10 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center active:scale-90 transition-all"
+        >
+          <Settings size={22} className="text-[#1a1a1a]" />
+        </button>
+      </div>
 
-      {/* Profile Card */}
-      <div className="bg-white rounded-2xl p-6 mb-6 shadow-sm border border-gray-100">
-        {/* Avatar */}
-        <div className="flex flex-col items-center mb-4">
+      {/* Profile Header Section */}
+      <div className="flex flex-col items-center">
+        {/* Avatar with Circular Border */}
+        <div className="relative mb-6">
+          <div className="absolute inset-0 -m-2 border-2 border-emerald-500 rounded-full clip-path-half" /> {/* Mock progress circle */}
           <AvatarPicker
             avatarUrl={avatarUrl}
             onAvatarChange={handleAvatarChange}
-            size="lg"
-            showControls={true}
+            size="xl"
+            showControls={false}
           />
+          <button 
+            onClick={() => navigate("/app/perfil")} // Should ideally trigger photo change
+            className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-emerald-500 border-4 border-white flex items-center justify-center text-white"
+          >
+            <Pencil size={14} fill="currentColor" />
+          </button>
         </div>
 
-        {/* Name */}
-        <div className="flex items-center justify-center gap-2 mb-2">
-          {isEditingName ? (
-            <div className="flex items-center gap-2">
-              <Input
-                value={editedName}
-                onChange={(e) => setEditedName(e.target.value)}
-                className="h-9 text-center font-semibold"
-                autoFocus
-              />
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-8 w-8"
-                onClick={handleSaveName}
-                disabled={isSavingName}
-              >
-                <Check size={16} className="text-green-500" />
-              </Button>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-8 w-8"
-                onClick={handleCancelEdit}
-              >
-                <X size={16} className="text-red-500" />
-              </Button>
-            </div>
-          ) : (
-            <>
-              <h2 className="text-xl font-semibold text-[#1a1a1a]">
-                {userProfile?.fullName || "Usuário"}
-              </h2>
-              <button
-                onClick={() => setIsEditingName(true)}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <Pencil size={14} className="text-gray-400" />
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Company Badge */}
-        {userProfile?.companyName && (
-          <div className="flex justify-center">
-            <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium">
-              {userProfile.companyName}
-            </span>
-          </div>
-        )}
-
-        {/* Email */}
-        <p className="text-center text-gray-500 text-sm mt-2">
-          {user?.email}
-        </p>
-      </div>
-
-      {/* Stats */}
-      {userStats && (
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
-            <p className="text-2xl font-bold text-[#1a1a1a]">{userStats.totalCalculations}</p>
-            <p className="text-sm text-gray-500">Cálculos</p>
-          </div>
-          <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
-            <p className="text-2xl font-bold text-[#1a1a1a]">{userStats.savedCalculations}</p>
-            <p className="text-sm text-gray-500">Salvos</p>
-          </div>
-        </div>
-      )}
-
-      {/* Menu Items */}
-      <div className="space-y-2 mb-6">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <button
-              key={item.id}
-              onClick={() => handleMenuClick(item.path)}
-              className="w-full bg-white rounded-xl p-4 flex items-center justify-between shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                  <Icon size={20} className="text-gray-600" />
-                </div>
-                <div className="text-left">
-                  <p className="text-[14px] font-medium text-[#1a1a1a]">{item.label}</p>
-                  <p className="text-[12px] text-gray-500">{item.description}</p>
-                </div>
+        {/* Name and Info */}
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-2">
+            {isEditingName ? (
+              <div className="flex items-center gap-2">
+                <Input
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  className="h-10 text-center font-bold text-[24px] w-48 border-none bg-transparent focus-visible:ring-0"
+                  autoFocus
+                />
+                <button onClick={handleSaveName} disabled={isSavingName} className="text-emerald-500"><Check size={20} /></button>
+                <button onClick={handleCancelEdit} className="text-red-500"><X size={20} /></button>
               </div>
-              <ChevronRight size={20} className="text-gray-400" />
-            </button>
-          );
-        })}
+            ) : (
+              <>
+                <h2 className="text-[28px] font-bold text-[#1a1a1a] tracking-tight" onClick={() => setIsEditingName(true)}>
+                  {userProfile?.fullName?.split(" ")[0] || "Usuário"}, 28
+                </h2>
+                <ShieldCheck size={22} className="text-blue-500 fill-blue-500 text-white" />
+              </>
+            )}
+          </div>
+          <p className="text-[#8a8a8a] font-medium text-[15px]">{userProfile?.companyName || "Piloto de Drones"}</p>
+        </div>
       </div>
 
-      {/* Logout Button */}
-      <button
-        onClick={handleLogout}
-        disabled={isLoggingOut}
-        className="w-full bg-red-50 text-red-600 rounded-xl p-4 flex items-center justify-center gap-2 font-medium hover:bg-red-100 transition-colors disabled:opacity-50"
-      >
-        <LogOut size={20} />
-        {isLoggingOut ? "Saindo..." : "Sair da conta"}
-      </button>
+      {/* Completion Status Card */}
+      <div className="px-2">
+        <div className="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-full border-4 border-emerald-500/20 flex items-center justify-center relative">
+              <span className="text-[14px] font-bold text-emerald-600">60%</span>
+              <svg className="absolute inset-0 w-full h-full -rotate-90">
+                <circle cx="28" cy="28" r="24" fill="none" stroke="currentColor" strokeWidth="4" className="text-emerald-500" strokeDasharray="150.79" strokeDashoffset="60.3" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-[15px] font-bold text-[#1a1a1a]">Complete seu perfil</p>
+              <p className="text-[13px] text-[#8a8a8a]">Para ter mais visibilidade</p>
+            </div>
+          </div>
+          <button 
+            onClick={() => setIsEditingName(true)}
+            className="px-5 py-2.5 rounded-full border border-[#1a1a1a] text-[14px] font-bold text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-all"
+          >
+            Editar Perfil
+          </button>
+        </div>
+      </div>
+
+      {/* Main Upgrade Card */}
+      <div className="px-2">
+        <div className="bg-[#f2f4f7] rounded-[32px] p-8 flex flex-col gap-6">
+          <div className="flex items-start gap-5">
+            <div className="w-16 h-16 rounded-[22px] bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-200">
+              <Crown size={32} className="text-white fill-white/20" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-[22px] font-bold text-[#1a1a1a]">Emerald Pro</h3>
+              <p className="text-[15px] text-[#1a1a1a]/60 font-medium leading-snug">Tenha acesso a relatórios avançados e IA exclusiva.</p>
+            </div>
+          </div>
+          <button className="bg-[#1a1a1a] text-white rounded-full py-4 text-[16px] font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-xl shadow-black/10">
+            <Plus size={20} /> Upgrade para Pro
+          </button>
+        </div>
+      </div>
+
+      {/* Stats and Items List */}
+      <div className="px-2 space-y-1">
+        <div className="p-4 flex items-center justify-between group active:bg-gray-50 rounded-2xl transition-all">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center">
+              <Star size={24} className="text-amber-500 fill-amber-500/20" />
+            </div>
+            <div>
+              <p className="text-[16px] font-bold text-[#1a1a1a]">{userStats?.totalCalculations || 0} Cálculos</p>
+              <p className="text-[13px] text-[#8a8a8a] font-medium">Histórico total de trabalho</p>
+            </div>
+          </div>
+          <ChevronRight size={20} className="text-gray-300" />
+        </div>
+
+        <div className="w-full h-px bg-gray-100 mx-4" />
+
+        <div className="p-4 flex items-center justify-between group active:bg-gray-50 rounded-2xl transition-all">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+              <History size={24} className="text-blue-500" />
+            </div>
+            <div>
+              <p className="text-[16px] font-bold text-[#1a1a1a]">{userStats?.savedCalculations || 0} Salvos</p>
+              <p className="text-[13px] text-[#8a8a8a] font-medium">Misturas e receitas favoritas</p>
+            </div>
+          </div>
+          <ChevronRight size={20} className="text-gray-300" />
+        </div>
+
+        <div className="w-full h-px bg-gray-100 mx-4" />
+
+        <div className="p-4 flex items-center justify-between group active:bg-gray-50 rounded-2xl transition-all" onClick={() => navigate("/app/ajuda")}>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center">
+              <HelpCircle size={24} className="text-emerald-500" />
+            </div>
+            <div>
+              <p className="text-[16px] font-bold text-[#1a1a1a]">Ajuda & Suporte</p>
+              <p className="text-[13px] text-[#8a8a8a] font-medium">Tire suas dúvidas agora</p>
+            </div>
+          </div>
+          <ChevronRight size={20} className="text-gray-300" />
+        </div>
+      </div>
+
+      {/* Logout */}
+      <div className="px-6 pt-4">
+        <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="w-full flex items-center justify-center gap-2 text-[15px] font-bold text-red-500 bg-red-50 py-4 rounded-2xl active:scale-95 transition-all"
+        >
+          <LogOut size={18} />
+          {isLoggingOut ? "Saindo..." : "Sair da conta"}
+        </button>
+      </div>
     </div>
   );
 }
