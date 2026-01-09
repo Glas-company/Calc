@@ -349,10 +349,10 @@ export default function Calc() {
             </div>
           )}
 
-          <div className="fixed bottom-[88px] left-0 right-0 px-6 z-40">
+          <div className="px-1 pt-4 pb-8">
             <Button 
               onClick={handleCalculate} 
-              className="w-full h-14 bg-[#1a1a1a] text-white text-[16px] font-bold rounded-[20px] shadow-xl active:scale-95 transition-all hover:bg-black uppercase tracking-wider"
+              className="w-full h-12 bg-[#1a1a1a] text-white text-[15px] font-bold rounded-2xl shadow-md active:scale-95 transition-all hover:bg-black uppercase tracking-wider"
             >
               Realizar Cálculo
             </Button>
@@ -452,14 +452,14 @@ export default function Calc() {
             </div>
 
             <div className="space-y-3 pt-4 pb-10">
-              <Button onClick={handleSaveCalculation} disabled={isSaving} className="w-full h-14 bg-emerald-600 text-white text-[16px] font-bold rounded-[20px] shadow-lg active:scale-95 transition-all hover:bg-emerald-700 uppercase tracking-wider">
+              <Button onClick={handleSaveCalculation} disabled={isSaving} className="w-full h-12 bg-emerald-600 text-white text-[15px] font-bold rounded-2xl shadow-md active:scale-95 transition-all hover:bg-emerald-700 uppercase tracking-wider">
                 {isSaving ? "Salvando..." : "Salvar no Histórico"}
               </Button>
               <div className="grid grid-cols-2 gap-3">
-                <Button onClick={() => navigate("/app/favoritos")} variant="outline" className="h-14 rounded-[20px] text-[#1a1a1a] font-bold border-gray-200">
+                <Button onClick={() => navigate("/app/favoritos")} variant="outline" className="h-12 rounded-2xl text-[#1a1a1a] font-bold border-gray-200 text-[14px]">
                   <History size={18} className="mr-2" /> Histórico
                 </Button>
-                <Button onClick={handleClear} variant="outline" className="h-14 rounded-[20px] text-[#1a1a1a] font-bold border-gray-200">
+                <Button onClick={handleClear} variant="outline" className="h-12 rounded-2xl text-[#1a1a1a] font-bold border-gray-200 text-[14px]">
                   <Plus size={18} className="mr-2" /> Novo
                 </Button>
               </div>
