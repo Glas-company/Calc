@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Check, Lightbulb } from "lucide-react";
+import { Check, User, Clock, Target, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 
@@ -12,116 +12,151 @@ export default function PlanReady() {
     setMounted(true);
   }, []);
 
-  // Dados de análise baseados no perfil do usuário
-  const analysisData = [
-    { label: "Tempo", value: "85%", color: "#1a1a1a", percent: 85, desc: "Ganho de eficiência" },
-    { label: "Precisão", value: "99%", color: "#22c55e", percent: 99, desc: "Redução de erros" },
-    { label: "Histórico", value: "100%", color: "#f19066", percent: 100, desc: "Dados protegidos" },
-    { label: "Padrão", value: "Alto", color: "#546de5", percent: 90, desc: "Nível profissional" },
+  // Mapear respostas para textos legíveis
+  const usageLabels: Record<string, string> = {
+    individual: "Uso individual",
+    equipe: "Pequena equipe",
+    crescimento: "Empresa em crescimento",
+    estruturada: "Empresa estruturada",
+  };
+
+  const frequencyLabels: Record<string, string> = {
+    diario: "Todos os dias",
+    semanal: "Algumas vezes por semana",
+    mensal: "Algumas vezes por mês",
+    raramente: "Raramente",
+  };
+
+  const problemLabels: Record<string, string> = {
+    tempo: "Ganhar tempo nos cálculos",
+    erros: "Reduzir erros de dosagem",
+    organizacao: "Melhorar organização",
+    padronizacao: "Padronizar processos",
+  };
+
+  const goalLabels: Record<string, string> = {
+    ganhar_tempo: "Ganhar tempo",
+    reduzir_erros: "Reduzir erros",
+    profissionalizar: "Profissionalizar",
+    escalar: "Escalar operações",
+  };
+
+  // Dados do perfil baseados nas respostas reais
+  const profileData = [
+    { 
+      icon: User, 
+      label: "Perfil", 
+      value: usageLabels[answers.usage || ''] || "Individual",
+      color: "#1a1a1a"
+    },
+    { 
+      icon: Clock, 
+      label: "Frequência", 
+      value: frequencyLabels[answers.frequency || ''] || "Regular",
+      color: "#22c55e"
+    },
+    { 
+      icon: Zap, 
+      label: "Prioridade", 
+      value: problemLabels[answers.problem || ''] || "Otimizar",
+      color: "#f19066"
+    },
+    { 
+      icon: Target, 
+      label: "Objetivo", 
+      value: goalLabels[answers.goal || ''] || "Melhorar",
+      color: "#546de5"
+    },
   ];
 
-  // Dicas personalizadas com base nas respostas do quiz
-  const getPersonalizedTips = () => {
-    const tips = [];
+  // Recursos do app baseados nas necessidades
+  const getFeatures = () => {
+    const features = [];
     
     if (answers.problem === 'tempo') {
-      tips.push("Reduza o tempo de preenchimento manual em até 40% usando nossos templates.");
+      features.push("Cálculos automáticos de dosagem em segundos");
     } else if (answers.problem === 'erros') {
-      tips.push("Nossa validação inteligente impede 99% dos erros de dosagem em campo.");
+      features.push("Validação automática para evitar erros");
+    } else if (answers.problem === 'organizacao') {
+      features.push("Histórico completo de todas as operações");
+    } else if (answers.problem === 'padronizacao') {
+      features.push("Templates prontos para padronizar");
     }
 
     if (answers.goal === 'profissionalizar') {
-      tips.push("Gere relatórios em PDF com sua marca para profissionalizar sua entrega.");
+      features.push("Relatórios em PDF com sua marca");
     } else if (answers.goal === 'escalar') {
-      tips.push("Compartilhe receitas com sua equipe e mantenha o padrão de qualidade.");
+      features.push("Compartilhe receitas com sua equipe");
+    } else {
+      features.push("Acesse de qualquer lugar, online ou offline");
     }
 
-    // Dica padrão se não houver muitas respostas
-    if (tips.length < 2) {
-      tips.push("Acesse seu histórico de qualquer lugar, mesmo sem internet no campo.");
-    }
-
-    return tips;
+    return features;
   };
 
   return (
     <div className="min-h-[100svh] bg-white flex flex-col px-6">
       <div className="flex-1 flex flex-col items-center pt-12 pb-10 overflow-y-auto">
-        {/* Ícone de Checkmark Preto */}
-        <div className={`mb-6 w-16 h-16 bg-[#1a1a1a] rounded-full flex items-center justify-center transition-all duration-700 scale-in ${mounted ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
+        {/* Ícone de Checkmark Verde */}
+        <div className={`mb-6 w-16 h-16 bg-[#22c55e] rounded-full flex items-center justify-center transition-all duration-700 scale-in ${mounted ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
           <Check size={32} className="text-white" strokeWidth={3} />
         </div>
 
-        <h1 className="text-[32px] font-extrabold text-[#1a1a1a] text-center mb-2 leading-tight">
-          Parabéns!
+        <h1 className="text-[28px] font-black text-[#1a1a1a] text-center mb-2 leading-tight" style={{ fontWeight: 900 }}>
+          Tudo pronto!
         </h1>
         
-        <p className="text-[18px] font-semibold text-[#1a1a1a] text-center mb-8 px-4">
-          Seu plano personalizado de produtividade está pronto!
+        <p className="text-[16px] text-gray-500 text-center mb-8 px-4">
+          Entendemos suas necessidades. O Calc está configurado para você.
         </p>
 
-        {/* Card Principal de Análise Operacional */}
+        {/* Card do Resumo do Perfil */}
         <div className="w-full bg-[#f8f8fb] rounded-[24px] p-6 mb-6">
-          <div className="mb-6">
+          <div className="mb-5">
             <h3 className="text-[18px] font-bold text-[#1a1a1a] mb-1">
-              Análise do seu perfil
+              Seu perfil
             </h3>
             <p className="text-gray-400 text-[14px]">
-              Estimativa de ganhos operacionais
+              Baseado nas suas respostas
             </p>
           </div>
 
-          {/* Grid de Análise (Estilo FitCal) */}
-          <div className="grid grid-cols-2 gap-4">
-            {analysisData.map((item, i) => (
-              <div key={i} className="bg-white rounded-[20px] p-4 relative flex flex-col items-center shadow-sm">
-                <span className="text-[14px] font-bold text-gray-400 mb-4">{item.label}</span>
-                
-                <div className="relative w-24 h-24 mb-2 flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90">
-                    <circle
-                      cx="48"
-                      cy="48"
-                      r={40}
-                      fill="none"
-                      stroke="#f3f4f6"
-                      strokeWidth="6"
-                    />
-                    <circle
-                      cx="48"
-                      cy="48"
-                      r={40}
-                      fill="none"
-                      stroke={item.color}
-                      strokeWidth="6"
-                      strokeDasharray={2 * Math.PI * 40}
-                      strokeDashoffset={2 * Math.PI * 40 * (1 - item.percent / 100)}
-                      strokeLinecap="round"
-                      className="transition-all duration-1000 ease-out"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-[16px] font-bold text-[#1a1a1a]">{item.value}</span>
-                  </div>
+          {/* Lista do Perfil */}
+          <div className="space-y-3">
+            {profileData.map((item, i) => (
+              <div 
+                key={i} 
+                className="bg-white rounded-[16px] p-4 flex items-center gap-4"
+              >
+                <div 
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: `${item.color}15` }}
+                >
+                  <item.icon size={20} style={{ color: item.color }} />
                 </div>
-                <span className="text-[11px] text-gray-400 mt-1">{item.desc}</span>
+                <div className="flex-1">
+                  <span className="text-[12px] text-gray-400 block">{item.label}</span>
+                  <span className="text-[15px] font-semibold text-[#1a1a1a]">{item.value}</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Seção de Dicas */}
+        {/* Recursos para você */}
         <div className="w-full space-y-4 mb-6">
-          <div className="flex items-center gap-2 px-2">
-            <Lightbulb className="text-yellow-500" size={20} />
-            <h4 className="text-[16px] font-bold text-[#1a1a1a]">Dicas para você</h4>
-          </div>
+          <h4 className="text-[16px] font-bold text-[#1a1a1a] px-2">
+            O que o Calc oferece para você
+          </h4>
           
           <div className="space-y-3">
-            {getPersonalizedTips().map((tip, index) => (
-              <div key={index} className="p-4 bg-green-50/50 border border-green-100 rounded-2xl">
+            {getFeatures().map((feature, index) => (
+              <div key={index} className="p-4 bg-green-50/50 border border-green-100 rounded-2xl flex items-center gap-3">
+                <div className="w-6 h-6 bg-[#22c55e] rounded-full flex items-center justify-center flex-shrink-0">
+                  <Check size={14} className="text-white" strokeWidth={3} />
+                </div>
                 <p className="text-[14px] text-gray-700 leading-relaxed">
-                  {tip}
+                  {feature}
                 </p>
               </div>
             ))}

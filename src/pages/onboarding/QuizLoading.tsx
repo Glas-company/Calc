@@ -8,8 +8,8 @@ export default function QuizLoading() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const duration = 3000; // 3 segundos
-    const intervalTime = 30;
+    const duration = 6500; // 6.5 segundos para criar mais ansiedade
+    const intervalTime = 50;
     const increment = 100 / (duration / intervalTime);
 
     const timer = setInterval(() => {
@@ -17,7 +17,7 @@ export default function QuizLoading() {
         const next = prev + increment;
         if (next >= 100) {
           clearInterval(timer);
-          setTimeout(() => navigate('/onboarding/plan-ready'), 500);
+          setTimeout(() => navigate('/onboarding/plan-ready'), 800);
           return 100;
         }
         return next;
@@ -75,13 +75,13 @@ export default function QuizLoading() {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-[42px] font-bold text-[#1a1a1a] tabular-nums">
+          <span className="text-[44px] font-black text-[#1a1a1a] tabular-nums" style={{ fontWeight: 900 }}>
             {Math.round(progress)}%
           </span>
         </div>
       </div>
 
-      <h2 className="text-[26px] font-extrabold text-[#1a1a1a] mb-12 leading-tight">
+      <h2 className="text-[24px] font-black text-[#1a1a1a] mb-12 leading-tight" style={{ fontWeight: 900 }}>
         {progress < 100 ? "Finalizando os preparativos..." : "Tudo pronto!"}
       </h2>
 
@@ -92,7 +92,7 @@ export default function QuizLoading() {
             <div className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${step >= index + 1 ? 'bg-[#22c55e]' : 'bg-gray-100'}`}>
               <Check size={16} className={`${step >= index + 1 ? 'text-white' : 'text-transparent'}`} strokeWidth={3} />
             </div>
-            <span className={`text-[17px] font-medium transition-colors duration-300 ${step >= index + 1 ? 'text-[#22c55e]' : 'text-gray-300'}`}>
+            <span className={`text-[16px] font-semibold transition-colors duration-300 ${step >= index + 1 ? 'text-[#22c55e]' : 'text-gray-300'}`}>
               {item}
             </span>
           </div>

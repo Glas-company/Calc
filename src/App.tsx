@@ -19,6 +19,8 @@ import SplashPage from "@/pages/SplashPage";
 import LoadingPage from "@/pages/LoadingPage";
 import Welcome from "@/pages/auth/Welcome";
 import QuizStep from "@/pages/onboarding/QuizStep";
+import QuizCongrats from "@/pages/onboarding/QuizCongrats";
+import QuizSuccess from "@/pages/onboarding/QuizSuccess";
 import QuizLoading from "@/pages/onboarding/QuizLoading";
 import PlanReady from "@/pages/onboarding/PlanReady";
 import StartExperience from "@/pages/onboarding/StartExperience";
@@ -70,6 +72,8 @@ const App = () => (
 
                 {/* Quiz Onboarding Flow */}
                 <Route path="/onboarding/quiz" element={<QuizStep />} />
+                <Route path="/onboarding/congrats" element={<QuizCongrats />} />
+                <Route path="/onboarding/success" element={<QuizSuccess />} />
                 <Route path="/onboarding/loading" element={<QuizLoading />} />
                 <Route path="/onboarding/plan-ready" element={<PlanReady />} />
                 <Route path="/onboarding/start-experience" element={<StartExperience />} />

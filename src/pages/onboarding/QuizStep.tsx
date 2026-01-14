@@ -69,7 +69,10 @@ export default function QuizStep() {
   }, [currentStep]);
 
   const stepData = steps[currentStep];
-  const progress = ((currentStep + 1) / steps.length) * 100;
+  // Total de 6 etapas: 4 perguntas + QuizCongrats + QuizSuccess
+  // As 4 perguntas do quiz ocupam os primeiros 4/6 do progresso (~67%)
+  const totalSteps = 6;
+  const progress = ((currentStep + 1) / totalSteps) * 100;
 
   const handleNext = () => {
     if (selectedOption) {
@@ -78,7 +81,7 @@ export default function QuizStep() {
         setCurrentStep(prev => prev + 1);
         setSelectedOption(null);
       } else {
-        navigate('/onboarding/loading');
+        navigate('/onboarding/congrats');
       }
     }
   };

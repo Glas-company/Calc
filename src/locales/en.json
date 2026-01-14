@@ -133,5 +133,17 @@
     "portuguese": "Português",
     "english": "English",
     "spanish": "Español"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "savedMethods": "Saved Payment Methods",
+    "addMethod": "Add Payment Method",
+    "expires": "Exp.",
+    "applePay": "Apple Pay",
+    "googlePay": "Google Pay",
+    "paypal": "PayPal",
+    "pix": "PIX",
+    "creditCard": "Credit/Debit Card",
+    "saveAndPay": "Save and pay via Cards"
   }
 }
