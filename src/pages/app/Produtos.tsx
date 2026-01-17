@@ -253,7 +253,7 @@ export default function Produtos() {
   };
 
   return (
-    <div className="pt-4 pb-32">
+    <div className="pt-4 pb-6">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-4">

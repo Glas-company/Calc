@@ -26,7 +26,11 @@ export function BottomNavigation() {
                 key={item.path}
                 to={item.path}
                 className="flex flex-col items-center relative -top-5"
-              >
+              onClick={() => {
+                if (item.path === "/app/calc") {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}>
                 <div className={cn(
                   "w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 active:scale-90",
                   isActive 
@@ -50,7 +54,11 @@ export function BottomNavigation() {
               key={item.path}
               to={item.path}
               className="flex flex-col items-center justify-center gap-0.5 min-w-[64px] transition-all active:scale-95"
-            >
+            onClick={() => {
+              if (item.path === "/app/calc") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}>
               <div className={cn(
                 "w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-200",
                 isActive 

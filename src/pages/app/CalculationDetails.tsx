@@ -88,7 +88,7 @@ export default function CalculationDetails() {
 
   if (!calculation) {
     return (
-      <div className="pt-4 pb-24">
+      <div className="pt-4 pb-6">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="w-12 h-12 border-2 border-gray-300 border-t-primary rounded-full animate-spin mx-auto mb-4" />
@@ -111,7 +111,7 @@ export default function CalculationDetails() {
   };
 
   return (
-    <div className="pt-4 pb-24">
+    <div className="pt-4 pb-6">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Button

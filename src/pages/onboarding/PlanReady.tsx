@@ -102,47 +102,52 @@ export default function PlanReady() {
         paddingBottom: "env(safe-area-inset-bottom)"
       }}
     >
-      <div className="flex-1 flex flex-col items-center pt-8 pb-10 overflow-y-auto w-full">
+      <div className="flex-1 flex flex-col items-center pt-8 pb-10 overflow-y-auto w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
         {/* Ícone de Checkmark Verde */}
-        <div className={`mb-6 w-16 h-16 bg-[#22c55e] rounded-full flex items-center justify-center transition-all duration-700 scale-in ${mounted ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
-          <Check size={32} className="text-white" strokeWidth={3} />
+        <div className={`mb-6 w-20 h-20 bg-[#22c55e] rounded-full flex items-center justify-center transition-all duration-700 scale-in shadow-lg shadow-green-200 ${mounted ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
+          <Check size={40} className="text-white" strokeWidth={3.5} />
         </div>
 
-        <h1 className="text-[28px] font-black text-[#1a1a1a] text-center mb-2 leading-tight" style={{ fontWeight: 900 }}>
+        <h1 className="text-[32px] font-black text-[#1a1a1a] text-center mb-3 leading-tight tracking-tight" style={{ fontWeight: 900 }}>
           Tudo pronto!
         </h1>
         
-        <p className="text-[16px] text-gray-500 text-center mb-8 px-4">
-          Entendemos suas necessidades. O Calc está configurado para você.
+        <p className="text-[16px] text-gray-500 text-center mb-10 px-6 leading-relaxed max-w-xs mx-auto">
+          Entendemos suas necessidades. <br/>O <span className="font-bold text-[#1a1a1a]">Calc</span> foi personalizado para você.
         </p>
 
-        {/* Card do Resumo do Perfil */}
-        <div className="w-full bg-[#f8f8fb] rounded-[24px] p-6 mb-6">
-          <div className="mb-5">
-            <h3 className="text-[18px] font-bold text-[#1a1a1a] mb-1">
-              Seu perfil
-            </h3>
-            <p className="text-gray-400 text-[14px]">
-              Baseado nas suas respostas
-            </p>
+        {/* Card do Resumo do Perfil - Grid Layout */}
+        <div className="w-full bg-white rounded-[32px] p-6 mb-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-100">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h3 className="text-[20px] font-bold text-[#1a1a1a] leading-none mb-1">
+                Seu perfil
+              </h3>
+              <p className="text-gray-400 text-[13px] font-medium">
+                Análise das suas respostas
+              </p>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
+              <User size={20} className="text-gray-900" />
+            </div>
           </div>
 
-          {/* Lista do Perfil */}
-          <div className="space-y-3">
+          {/* Grid do Perfil */}
+          <div className="grid grid-cols-2 gap-3">
             {profileData.map((item, i) => (
               <div 
                 key={i} 
-                className="bg-white rounded-[16px] p-4 flex items-center gap-4"
+                className="bg-[#f8f8fb] rounded-[20px] p-4 flex flex-col gap-3 transition-all duration-300 hover:bg-gray-50"
               >
                 <div 
                   className="w-10 h-10 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: `${item.color}15` }}
+                  style={{ backgroundColor: item.color }}
                 >
-                  <item.icon size={20} style={{ color: item.color }} />
+                  <item.icon size={20} className="text-white" />
                 </div>
-                <div className="flex-1">
-                  <span className="text-[12px] text-gray-400 block">{item.label}</span>
-                  <span className="text-[15px] font-semibold text-[#1a1a1a]">{item.value}</span>
+                <div>
+                  <span className="text-[11px] text-gray-400 font-medium uppercase tracking-wide block mb-0.5">{item.label}</span>
+                  <span className="text-[14px] font-bold text-[#1a1a1a] leading-tight block">{item.value}</span>
                 </div>
               </div>
             ))}
@@ -150,18 +155,19 @@ export default function PlanReady() {
         </div>
 
         {/* Recursos para você */}
-        <div className="w-full space-y-4 mb-6">
-          <h4 className="text-[16px] font-bold text-[#1a1a1a] px-2">
-            O que o Calc oferece para você
+        <div className="w-full space-y-5 mb-4">
+          <h4 className="text-[18px] font-bold text-[#1a1a1a] px-2 flex items-center gap-2">
+            <Zap size={20} className="text-[#A3FF3F] fill-current" />
+            Destaques para você
           </h4>
           
           <div className="space-y-3">
             {getFeatures().map((feature, index) => (
-              <div key={index} className="p-4 bg-green-50/50 border border-green-100 rounded-2xl flex items-center gap-3">
-                <div className="w-6 h-6 bg-[#22c55e] rounded-full flex items-center justify-center flex-shrink-0">
+              <div key={index} className="p-5 bg-white border border-gray-100 shadow-sm rounded-2xl flex items-start gap-4">
+                <div className="w-6 h-6 bg-[#22c55e] rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Check size={14} className="text-white" strokeWidth={3} />
                 </div>
-                <p className="text-[14px] text-gray-700 leading-relaxed">
+                <p className="text-[15px] text-gray-700 leading-relaxed font-medium">
                   {feature}
                 </p>
               </div>

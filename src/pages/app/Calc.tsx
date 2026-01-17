@@ -167,7 +167,13 @@ export default function Calc() {
 
     if (calculation.result) {
       setResult(calculation.result);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Tenta rolar o container principal (main) se existir, ou a janela
+      const mainContainer = document.querySelector('main');
+      if (mainContainer) {
+        mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } else {
       setError(calculation.errors?.messages[0] || "Erro ao calcular.");
     }
@@ -213,7 +219,7 @@ export default function Calc() {
 
   return (
     <div 
-      className="space-y-6 pb-32 animate-fade-in bg-[#fdfdfd] min-h-screen min-h-[100dvh] px-2"
+      className="space-y-6 pb-6 animate-fade-in bg-[#fdfdfd] min-h-screen min-h-[100dvh] px-2"
       style={{
         paddingTop: "env(safe-area-inset-top)",
       }}

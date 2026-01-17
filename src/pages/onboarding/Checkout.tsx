@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, CreditCard, Shield, Clock, Calendar, Lock, X } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 import { useToast } from "@/hooks/use-toast";
 import { format, addDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabaseClient";
+import iphoneImg from "@/assets/iphone.png";
+import calcIcon from "@/assets/calc.png";
 
 // Tipos
 type Plan = {
   id: "monthly" | "yearly";
   name: string;
-  price: number;
-  originalPrice: number;
+  price: number; // valor real que será cobrado após o trial
+  originalPrice: number; // valor “sem desconto” usado apenas para exibir o risco
   period: string;
   periodLabel: string;
   saveLabel?: string;
@@ -24,8 +27,8 @@ const PLANS: Plan[] = [
   {
     id: "monthly",
     name: "Mensal",
-    price: 19.90, // Valor promocional
-    originalPrice: 49.90,
+    price: 49.90,
+    originalPrice: 124.90,
     period: "/mês",
     periodLabel: "mensal",
     trialDays: 7
@@ -33,8 +36,8 @@ const PLANS: Plan[] = [
   {
     id: "yearly",
     name: "Anual",
-    price: 199.90, // Valor promocional (~16,65/mês)
-    originalPrice: 499.90,
+    price: 499.90,
+    originalPrice: 1249.90,
     period: "/ano",
     periodLabel: "anual",
     saveLabel: "Economize 60%",
@@ -48,6 +51,10 @@ export default function Checkout() {
   const { toast } = useToast();
   const { refreshUser } = useAuth();
   
+  // Carousel
+  const [emblaRef] = useEmblaCarousel({ loop: true });
+  const carouselImages = [iphoneImg, iphoneImg, iphoneImg];
+
   // State for flow control
   const [step, setStep] = useState<"plans" | "payment">("plans");
   const [selectedPlanId, setSelectedPlanId] = useState<"monthly" | "yearly">("yearly");
@@ -66,12 +73,27 @@ export default function Checkout() {
   const [timeLeft, setTimeLeft] = useState("23:59:59.00");
   
   useEffect(() => {
+    const STORAGE_KEY = "calc_checkout_deadline";
+    let deadline = localStorage.getItem(STORAGE_KEY);
+
+    if (!deadline) {
+      // First access: set 24 hours from now
+      const targetDate = new Date().getTime() + 24 * 60 * 60 * 1000;
+      deadline = targetDate.toString();
+      localStorage.setItem(STORAGE_KEY, deadline);
+    }
+
+    const targetTime = parseInt(deadline, 10);
+
     const interval = setInterval(() => {
-      const now = new Date();
-      const endOfDay = new Date();
-      endOfDay.setHours(23, 59, 59, 999);
+      const now = new Date().getTime();
+      const diff = targetTime - now;
       
-      const diff = endOfDay.getTime() - now.getTime();
+      if (diff <= 0) {
+        setTimeLeft("00:00:00.00");
+        return;
+      }
+
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
@@ -92,7 +114,7 @@ export default function Checkout() {
     if (step === "payment") {
       setStep("plans");
     } else {
-      const fallback = '/onboarding/payment-selection';
+      const fallback = '/onboarding/start-experience';
       const hasHistory = typeof window !== 'undefined' && window.history.length > 1;
       if (hasHistory) {
         navigate(-1);
@@ -206,59 +228,74 @@ export default function Checkout() {
     }
   };
 
-  // Render Plan Selection Step
   if (step === "plans") {
     return (
-      <div className="min-h-[100svh] bg-white flex flex-col relative">
-        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-gray-50 to-white -z-10" />
-        
-        {/* Header with Close Button */}
-        <div className="px-6 pt-6 pb-2 flex justify-end">
-          <button onClick={() => navigate('/auth/login')} className="p-2 -mr-2 text-gray-400">
-            <X size={24} />
+      <div className="h-[100svh] bg-[#f3f4f6] flex flex-col overflow-hidden relative">
+        <div className="absolute top-6 right-6 z-50">
+          <button onClick={() => navigate("/auth/login")} className="p-2 text-gray-500 bg-white/50 backdrop-blur-sm rounded-full">
+            <X size={20} />
           </button>
         </div>
 
-        <div className="flex-1 flex flex-col items-center px-6 pt-4 pb-8 overflow-y-auto">
-          {/* Title */}
-          <div className="text-center mb-8">
-            <h1 className="text-[24px] font-bold text-[#1a1a1a] mb-2">
-              Acesso ilimitado
-            </h1>
-            <div className="flex items-center justify-center gap-2">
-              <span className="text-[28px] font-[900] text-[#1a1a1a] italic tracking-tighter">Calc</span>
+        {/* Carousel Section */}
+        <div className="h-[55%] w-full relative" ref={emblaRef}>
+          <div className="flex h-full">
+            {carouselImages.map((img, index) => (
+              <div key={index} className="flex-[0_0_100%] min-w-0 relative h-full flex items-center justify-center bg-gradient-to-b from-[#f5f5f5] to-white">
+                <img
+                  src={img}
+                  alt={`Slide ${index + 1}`}
+                  className="h-[90%] w-auto object-contain z-10"
+                />
+                {/* Dark gradient overlay on image */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 pointer-events-none z-20" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Content Section - Static & Compact */}
+        <div className="flex-1 w-full bg-white rounded-t-[32px] shadow-[0_-8px_24px_rgba(0,0,0,0.08)] -mt-8 relative z-30 px-6 pt-6 pb-6 flex flex-col justify-between">
+          <div className="text-center mb-4">
+            <h1 className="text-[18px] font-bold text-[#1a1a1a] mb-2">Acesso ilimitado</h1>
+            <div className="relative inline-block">
+              <img 
+                src={calcIcon} 
+                alt="Calc" 
+                className="absolute right-[calc(100%+6px)] top-1/2 -translate-y-1/2 w-8 h-8 object-contain" 
+              />
+              <span className="text-[28px] font-[900] text-[#1a1a1a] uppercase tracking-tighter leading-none">
+                CALC
+              </span>
             </div>
           </div>
 
-          {/* Plan Cards */}
-          <div className="w-full max-w-sm grid grid-cols-2 gap-4 mb-8">
+          <div className="w-full grid grid-cols-2 gap-3 mb-4">
             {PLANS.map((plan) => (
               <button
                 key={plan.id}
                 onClick={() => setSelectedPlanId(plan.id)}
-                className={`relative flex flex-col items-center p-4 rounded-2xl border-2 transition-all duration-300 ${
+                className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all duration-300 ${
                   selectedPlanId === plan.id
-                    ? "border-[#1a1a1a] bg-white shadow-lg scale-[1.02]"
+                    ? "border-[#1a1a1a] bg-white shadow-md scale-[1.02]"
                     : "border-gray-100 bg-white hover:border-gray-200"
                 }`}
               >
                 {plan.saveLabel && (
-                  <div className="absolute -top-3 right-2 bg-black text-white text-[10px] font-bold px-2 py-1 rounded-full">
+                  <div className="absolute -top-2.5 right-2 bg-black text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
                     {plan.saveLabel}
                   </div>
                 )}
-                
-                <span className="text-[15px] font-bold text-[#1a1a1a] mb-1">
-                  {plan.name}
-                </span>
-                
-                <div className="flex flex-col items-center mb-1">
-                  <span className="text-[11px] text-gray-400 line-through">
-                    R$ {plan.originalPrice.toFixed(2).replace('.', ',')}
+
+                <span className="text-[13px] font-bold text-[#1a1a1a] mb-0.5">{plan.name}</span>
+
+                <div className="flex flex-col items-center">
+                  <span className="text-[10px] text-gray-400 line-through leading-tight">
+                    R$ {plan.originalPrice.toFixed(2).replace(".", ",")}
                     {plan.period}
                   </span>
-                  <span className="text-[14px] font-bold text-[#1a1a1a]">
-                    R$ {plan.price.toFixed(2).replace('.', ',')}
+                  <span className="text-[13px] font-bold text-[#1a1a1a] leading-tight">
+                    R$ {plan.price.toFixed(2).replace(".", ",")}
                     {plan.period}
                   </span>
                 </div>
@@ -266,23 +303,20 @@ export default function Checkout() {
             ))}
           </div>
 
-          {/* Countdown Timer */}
-          <div className="text-center mb-8">
-            <p className="text-[13px] font-medium text-gray-900 tabular-nums tracking-wide">
+          <div className="text-center">
+            <p className="text-[12px] font-medium text-gray-900 tabular-nums tracking-wide">
               {timeLeft} restante
             </p>
           </div>
 
-          {/* CTA Button */}
           <button
             onClick={() => setStep("payment")}
-            className="w-full max-w-sm py-4 px-8 text-[16px] font-bold rounded-[30px] transition-all duration-300 active:scale-[0.98] mb-6 bg-black text-white hover:bg-gray-900 shadow-lg"
+            className="w-full py-3.5 px-6 text-[15px] font-bold rounded-[24px] transition-all duration-300 active:scale-[0.98] bg-[#A3FF3F] text-black hover:bg-[#93F039] shadow-lg shadow-[#A3FF3F]/40"
           >
-            Obtenha 60% de desconto Premium
+            Obter plano {selectedPlan.name} com 60% de desconto
           </button>
 
-          {/* Footer Links */}
-          <div className="flex flex-col items-center gap-2 text-[11px] text-gray-400 font-medium">
+          <div className="flex flex-col items-center gap-1.5 text-[10px] text-gray-400 font-medium">
             <button className="hover:text-gray-600">Restaurar compras</button>
             <div className="flex gap-4">
               <button className="hover:text-gray-600">Termos de serviço</button>
