@@ -129,28 +129,28 @@ export default function QuizStep() {
         </div>
       </div>
 
-      <div className="flex-1 px-6 flex flex-col text-center">
-        <div className="flex-1 flex flex-col justify-center">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1a1a1a] mb-3 leading-tight transition-all duration-500">
+      <div className="flex-1 px-6 flex flex-col text-center overflow-y-auto">
+        <div className="flex-1 flex flex-col justify-center py-4">
+          <h2 className="text-xl sm:text-3xl font-extrabold text-[#1a1a1a] mb-2 sm:mb-3 leading-tight transition-all duration-500">
             {stepData.title}
           </h2>
-          <p className="text-gray-500 text-base sm:text-lg mb-10 px-4 leading-relaxed">
+          <p className="text-gray-500 text-sm sm:text-lg mb-6 sm:mb-10 px-2 sm:px-4 leading-relaxed">
             {stepData.subtitle}
           </p>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {stepData.options.map((option, index) => (
               <button
                 key={option.value}
                 onClick={() => setSelectedOption(option.value)}
-                className={`w-full p-5 sm:p-6 text-center rounded-[20px] transition-all duration-200 ${
+                className={`w-full p-4 sm:p-6 text-center rounded-[20px] transition-all duration-200 ${
                   selectedOption === option.value 
                     ? "bg-[#1a1a1a] text-white shadow-lg" 
                     : "bg-[#f4f4f5] text-[#1a1a1a] hover:bg-gray-200 border-none"
                 }`}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <span className="text-base sm:text-lg font-bold">
+                <span className="text-sm sm:text-lg font-bold">
                   {option.label}
                 </span>
               </button>
@@ -159,7 +159,7 @@ export default function QuizStep() {
         </div>
       </div>
 
-      <div className="px-6 pb-10 pt-6">
+      <div className="px-6 pb-6 sm:pb-10 pt-4 sm:pt-6 shrink-0">
         <button
           onClick={handleNext}
           disabled={!selectedOption}

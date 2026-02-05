@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import bandeiraBrasil from "@/assets/bandeira brasil.png";
-import bandeiraEUA from "@/assets/EUA.png";
-import bandeiraEspanha from "@/assets/ES.png";
+import bandeiraEUA from "@/assets/bandeira dos estados unidos.webp";
+import bandeiraEspanha from "@/assets/bandeira da espanha.webp";
 
 const languages = [
   { code: "pt" as const, name: "PT", flag: bandeiraBrasil },

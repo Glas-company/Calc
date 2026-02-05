@@ -80,8 +80,8 @@ export default function Login() {
       
       <div className="fixed inset-0 grid-pattern opacity-50 pointer-events-none"></div>
       
-      <div className="relative z-10 flex flex-col flex-grow px-6 pt-12 pb-8 max-w-md mx-auto w-full">
-        <div className="mb-8">
+      <div className="relative z-10 flex flex-col flex-grow px-6 pt-6 sm:pt-12 pb-8 max-w-md mx-auto w-full overflow-y-auto">
+        <div className="mb-4 sm:mb-8">
           <button 
           onClick={() => navigate("/landing")} 
           className="p-2 -ml-2 text-slate-600 dark:text-slate-400 hover:text-[#A3FF33] transition-colors"
@@ -90,9 +90,9 @@ export default function Login() {
         </button>
         </div>
 
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">{t('auth.login.title')}</h1>
-          <p className="text-slate-500 dark:text-slate-400 font-medium">{t('auth.login.subtitle')}</p>
+        <div className="text-center mb-6 sm:mb-10">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">{t('auth.login.title')}</h1>
+          <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">{t('auth.login.subtitle')}</p>
         </div>
 
         {error && (
@@ -101,18 +101,18 @@ export default function Login() {
           </div>
         )}
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
+        <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1" htmlFor="email">{t('auth.login.emailLabel')}</label>
             <div className="relative group">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#A3FF33] transition-colors w-6 h-6" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#A3FF33] transition-colors w-5 h-5 sm:w-6 sm:h-6" />
               <input 
                 id="email" 
                 type="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('auth.register.emailPlaceholder')}
-                className="w-full pl-12 pr-4 py-4 bg-slate-100 dark:bg-[#18181b] border-none rounded-[22px] focus:ring-2 focus:ring-[#A3FF33] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-600 transition-all outline-none"
+                className="w-full pl-12 pr-4 py-3 sm:py-4 bg-slate-100 dark:bg-[#18181b] border-none rounded-[22px] focus:ring-2 focus:ring-[#A3FF33] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-600 transition-all outline-none text-sm sm:text-base"
               />
             </div>
           </div>
@@ -120,21 +120,21 @@ export default function Login() {
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1" htmlFor="password">{t('auth.login.passwordLabel')}</label>
             <div className="relative group">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#A3FF33] transition-colors w-6 h-6" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#A3FF33] transition-colors w-5 h-5 sm:w-6 sm:h-6" />
               <input 
                 id="password" 
                 type={showPassword ? "text" : "password"} 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-12 pr-12 py-4 bg-slate-100 dark:bg-[#18181b] border-none rounded-[22px] focus:ring-2 focus:ring-[#A3FF33] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-600 transition-all outline-none"
+                className="w-full pl-12 pr-12 py-3 sm:py-4 bg-slate-100 dark:bg-[#18181b] border-none rounded-[22px] focus:ring-2 focus:ring-[#A3FF33] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-600 transition-all outline-none text-sm sm:text-base"
               />
               <button 
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
               >
-                {showPassword ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
+                {showPassword ? <EyeOff className="w-5 h-5 sm:w-6 sm:h-6" /> : <Eye className="w-5 h-5 sm:w-6 sm:h-6" />}
               </button>
             </div>
           </div>

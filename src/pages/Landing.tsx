@@ -4,34 +4,18 @@ import { ArrowRight, Crosshair, Droplet } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useI18n } from "@/contexts/I18nContext";
 import principalImg from "@/assets/principal.png";
+import { LanguageSelector } from "@/components/ui/LanguageSelector";
 
 export default function Landing() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
-  const { t, language, setLanguage } = useI18n();
+  const { t } = useI18n();
 
   useEffect(() => {
     if (user && !loading) {
       navigate("/app/home", { replace: true });
     }
   }, [user, loading, navigate]);
-
-  const toggleLanguage = () => {
-    if (language === 'pt') setLanguage('en');
-    else if (language === 'en') setLanguage('es');
-    else setLanguage('pt');
-  };
-
-  const getLanguageLabel = () => {
-    switch (language) {
-      case 'pt': return { flag: '🇧🇷', label: 'PT' };
-      case 'en': return { flag: '🇺🇸', label: 'EN' };
-      case 'es': return { flag: '🇪🇸', label: 'ES' };
-      default: return { flag: '🇧🇷', label: 'PT' };
-    }
-  };
-
-  const langInfo = getLanguageLabel();
 
   return (
     <div 
@@ -52,51 +36,45 @@ export default function Landing() {
 
       {/* Header */}
       <header className="p-6 flex justify-end">
-        <button 
-          onClick={toggleLanguage}
-          className="flex items-center space-x-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-full shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-        >
-          <span className="text-sm font-medium">{langInfo.flag}</span>
-          <span className="text-sm font-semibold uppercase tracking-wider">{langInfo.label}</span>
-        </button>
+        <LanguageSelector />
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col px-6 relative overflow-hidden shrink-0 justify-center min-h-0">
+      <main className="flex-1 flex flex-col items-center px-6 relative overflow-hidden shrink-0 justify-center min-h-0">
         <div className="absolute inset-0 grid-pattern opacity-60 pointer-events-none -z-10"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full hero-glow pointer-events-none -z-10"></div>
 
-        <div className="flex-1 flex items-center justify-center relative py-2 min-h-0 w-full max-w-md mx-auto">
+        <div className="flex items-center justify-center relative pt-4 pb-1 min-h-0 w-full max-w-xl mx-auto">
             {/* Main Image */}
-            <div className="relative flex items-center justify-center w-full">
+            <div className="relative translate-x-3 md:translate-x-5">
                 <img 
                     src={principalImg} 
                     alt="App Preview" 
-                    className="relative h-auto w-auto max-h-[45vh] object-contain drop-shadow-2xl z-20"
+                    className="relative h-auto w-auto max-h-[55vh] object-contain drop-shadow-2xl z-20"
                 />
 
                 {/* Floating Icons */}
-                <div className="absolute top-[10%] right-4 bg-white dark:bg-slate-800 p-2.5 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce z-10" style={{ animationDuration: '4s' }}>
-                    <Crosshair className="text-[#A3FF47] w-5 h-5" />
+                <div className="absolute top-[10%] right-[-10px] bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce z-10" style={{ animationDuration: '4s' }}>
+                    <Crosshair className="text-[#A3FF47] w-6 h-6" />
                 </div>
-                <div className="absolute bottom-[15%] left-4 bg-white dark:bg-slate-800 p-2.5 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce z-10" style={{ animationDuration: '5s', animationDelay: '1s' }}>
-                    <Droplet className="text-blue-500 w-5 h-5" />
+                <div className="absolute bottom-[15%] left-[-10px] bg-white dark:bg-slate-800 p-3 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 animate-bounce z-10" style={{ animationDuration: '5s', animationDelay: '1s' }}>
+                    <Droplet className="text-blue-500 w-6 h-6" />
                 </div>
             </div>
         </div>
 
         {/* Text Content */}
-        <div className="text-center pt-2 pb-4">
-            <h1 className="text-xl md:text-2xl font-extrabold tracking-tight mb-2 text-slate-900 dark:text-white">
+        <div className="text-center pt-1 pb-4 w-full max-w-xl mx-auto">
+            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-3 text-slate-900 dark:text-white">
                 CALC
             </h1>
-            <p className="text-sm md:text-base font-semibold leading-snug px-4 text-slate-800 dark:text-slate-200">
+            <p className="text-base md:text-lg font-semibold leading-snug px-4 text-slate-800 dark:text-slate-200">
                 {t('welcome.appDescription')}
             </p>
-            <div className="mt-3 flex justify-center space-x-1">
-                <div className="h-1 w-6 rounded-full bg-[#A3FF47]"></div>
-                <div className="h-1 w-1.5 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-                <div className="h-1 w-1.5 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+            <div className="mt-4 flex justify-center space-x-1">
+                <div className="h-1.5 w-8 rounded-full bg-[#A3FF47]"></div>
+                <div className="h-1.5 w-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                <div className="h-1.5 w-2 rounded-full bg-slate-200 dark:bg-slate-700"></div>
             </div>
         </div>
       </main>
